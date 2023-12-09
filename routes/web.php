@@ -16,24 +16,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('authors', [AuthorController::class, 'index']);
+    Route::get('author-add', [AuthorController::class, 'addAuthor']);
+    Route::post('author-add', [AuthorController::class, 'storeAuthor']);
+    Route::get('author-edit/{id}', [AuthorController::class, 'editAuthor']);
+    Route::post('author-edit/{id}', [AuthorController::class, 'updateAuthor']);
+    Route::get('author-delete/{id}', [AuthorController::class, 'deleteAuthor']);
 
-Route::get('authors', [AuthorController::class, 'index']);
-Route::get('author-add', [AuthorController::class, 'addAuthor']);
-Route::post('author-add', [AuthorController::class, 'storeAuthor']);
-Route::get('author-edit/{id}', [AuthorController::class, 'editAuthor']);
-Route::post('author-edit/{id}', [AuthorController::class, 'updateAuthor']);
-Route::get('author-delete/{id}', [AuthorController::class, 'deleteAuthor']);
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('category-add', [CategoryController::class, 'addCategory']);
+    Route::post('category-add', [CategoryController::class, 'storeCategory']);
+    Route::get('category-edit/{id}', [CategoryController::class, 'editCategory']);
+    Route::post('category-edit/{id}', [CategoryController::class, 'updateCategory']);
+    Route::get('category-delete/{id}', [CategoryController::class, 'deleteCategory']);
 
-Route::get('categories', [CategoryController::class, 'index']);
-Route::get('category-add', [CategoryController::class, 'addCategory']);
-Route::post('category-add', [CategoryController::class, 'storeCategory']);
-Route::get('category-edit/{id}', [CategoryController::class, 'editCategory']);
-Route::post('category-edit/{id}', [CategoryController::class, 'updateCategory']);
-Route::get('category-delete/{id}', [CategoryController::class, 'deleteCategory']);
+    Route::get('/dashboard', [BookController::class, 'index']);
+    Route::get('book-add', [BookController::class, 'addBook']);
+    Route::post('book-add', [BookController::class, 'storeBook']);
+    Route::get('book-edit/{id}', [BookController::class, 'editBook']);
+    Route::post('book-edit/{id}', [BookController::class, 'updateBook']);
+    Route::get('book-delete/{id}', [BookController::class, 'deleteBook']);
+});
 
-Route::get('/', [BookController::class, 'index']);
-Route::get('book-add', [BookController::class, 'addBook']);
-Route::post('book-add', [BookController::class, 'storeBook']);
-Route::get('book-edit/{id}', [BookController::class, 'editBook']);
-Route::post('book-edit/{id}', [BookController::class, 'updateBook']);
-Route::get('book-delete/{id}', [BookController::class, 'deleteBook']);
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
